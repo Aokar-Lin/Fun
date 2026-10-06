@@ -220,6 +220,8 @@ h2.love-title .typewriter {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
   background: linear-gradient(45deg, var(--pink), var(--pink-dark));
   color: white;
   padding: 10px 28px;
@@ -230,6 +232,18 @@ h2.love-title .typewriter {
   box-shadow: 0 10px 25px rgba(201, 24, 74, 0.35);
   animation: fadeInUp 1s ease 0.9s both, glowPulse 2.5s ease-in-out infinite;
   margin-bottom: 25px;
+}
+
+.love-badge .badge-arrow {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+  animation: arrowBounce 1.6s ease-in-out infinite;
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(4px); opacity: 0.75; }
 }
 
 @keyframes glowPulse {
@@ -259,23 +273,6 @@ h2.love-title .typewriter {
   border: none;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   letter-spacing: 0.5px;
-}
-
-.btn-primary {
-  background: linear-gradient(45deg, var(--pink), var(--pink-dark));
-  color: white;
-  box-shadow: 0 12px 30px rgba(201, 24, 74, 0.35);
-  animation: fadeInUp 1s ease 1.1s both;
-}
-
-.btn-primary:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 18px 40px rgba(201, 24, 74, 0.5);
-}
-
-.btn-scroll {
-  font-size: 0.95rem;
-  padding: 12px 32px;
 }
 
 /* ---------- Section titles ---------- */
@@ -341,6 +338,229 @@ h2.love-title .typewriter {
   font-style: italic;
 }
 
+.letter-paper .sign-name {
+  display: inline-block;
+  font-family: 'Brush Script MT', 'Segoe Script', 'Lucida Handwriting', cursive;
+  font-size: 2rem;
+  font-style: normal;
+  color: var(--pink);
+  margin-top: 2px;
+  transform: rotate(-2deg);
+}
+
+/* ---------- Sample photo / animation spot ---------- */
+.polaroid {
+  background: #fff;
+  border-radius: 18px;
+  padding: 16px 16px 20px;
+  margin: 25px auto 0;
+  max-width: 420px;
+  box-shadow: 0 15px 40px rgba(201, 24, 74, 0.2);
+  border: 1.5px solid var(--pink-pale);
+  transform: rotate(1.5deg);
+  transition: transform 0.4s ease;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+/* Themed photo frame - matches the website's pink theme */
+.photo-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 3px solid #fff;
+  outline: 2px solid var(--pink-light);
+  box-shadow: 0 10px 30px rgba(255, 77, 109, 0.35);
+}
+
+/* Soft pink tint overlay so the photo blends with the theme */
+.photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255, 143, 163, 0.3), rgba(201, 24, 74, 0.3));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.polaroid img.photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: saturate(1.25) contrast(1.03) brightness(1.02);
+}
+
+.photo-wrap .sticker {
+  position: absolute;
+  font-size: 1.8rem;
+  z-index: 2;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+  animation: wiggle 3s ease-in-out infinite;
+}
+
+.photo-wrap .sticker.s1 {
+  top: 8px;
+  left: 8px;
+}
+
+.photo-wrap .sticker.s2 {
+  bottom: 8px;
+  right: 8px;
+  animation-delay: 1.5s;
+}
+
+.polaroid-caption {
+  margin-top: 12px;
+  font-weight: 800;
+  color: var(--pink-dark);
+  font-size: 1.05rem;
+}
+
+/* ---------- Photo stack slideshow (JS) ---------- */
+.photo-stack {
+  position: relative;
+  max-width: 420px;
+  margin: 30px auto 0;
+  aspect-ratio: 10 / 12;
+  cursor: pointer;
+}
+
+.photo-stack .polaroid.stack-photo {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.6s ease;
+}
+
+.photo-stack .stack-photo.is-front {
+  z-index: 2;
+  transform: rotate(1.5deg) scale(1);
+}
+
+.photo-stack .stack-photo.is-back {
+  z-index: 1;
+  transform: rotate(-7deg) scale(0.93) translateY(10px);
+}
+
+.photo-stack .photo-wrap {
+  flex: 1;
+  min-height: 0;
+  background: linear-gradient(160deg, #ffd6de, #ffb3c1);
+}
+
+.photo-stack img.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stack-dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.stack-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--pink-pale);
+  border: 2px solid var(--pink-light);
+  cursor: pointer;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.stack-dots .dot.active {
+  background: var(--pink-dark);
+  transform: scale(1.25);
+}
+
+.stack-hint {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #a07a8a;
+  font-style: italic;
+}
+
+/* ---------- Background photo collage ---------- */
+.bg-gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-photo {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 10px 28px;
+  border-radius: 8px;
+  box-shadow: 0 15px 40px rgba(201, 24, 74, 0.25);
+  opacity: 0.55;
+  animation: bgDrift 9s ease-in-out infinite;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Soft pink tint so background photos match the theme too */
+.bg-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255, 143, 163, 0.35), rgba(201, 24, 74, 0.35));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.bg-photo img {
+  width: 150px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  filter: saturate(1.25) contrast(1.03) brightness(1.02);
+}
+
+.bg-photo figcaption {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.bg-photo.p1 {
+  top: 12%;
+  left: 4%;
+  transform: rotate(-10deg);
+}
+
+.bg-photo.p2 {
+  top: 38%;
+  right: 3%;
+  transform: rotate(8deg);
+  animation-delay: 2s;
+}
+
+.bg-photo.p3 {
+  bottom: 8%;
+  left: 6%;
+  transform: rotate(6deg);
+  animation-delay: 4s;
+}
+
+@keyframes bgDrift {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -16px; }
+}
+
 /* ---------- Forgive section ---------- */
 .forgive-box {
   background: linear-gradient(160deg, rgba(255,255,255,0.95), rgba(255, 240, 243, 0.95));
@@ -390,19 +610,24 @@ h2.love-title .typewriter {
   transition: transform 0.25s ease;
 }
 
-/* Playful: NO button runs away on hover (desktop) */
-.btn-no:hover {
-  animation: dodge 0.6s ease infinite;
-  border-color: var(--pink-light);
-  color: var(--pink);
+/* NO button movement is handled by JS (script.js) so taps work on mobile too */
+
+.btn-whatsapp {
+  background: linear-gradient(45deg, #25d366, #128c7e);
+  color: white;
+  font-size: 1.1rem;
+  padding: 16px 40px;
+  margin-top: 5px;
+  animation: glowWhatsapp 2s ease-in-out infinite;
 }
 
-@keyframes dodge {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-30px, -15px) rotate(-8deg); }
-  50% { transform: translate(30px, 10px) rotate(8deg); }
-  75% { transform: translate(-20px, 12px); }
-  100% { transform: translate(0, 0); }
+@keyframes glowWhatsapp {
+  0%, 100% { box-shadow: 0 12px 30px rgba(37, 211, 102, 0.45); }
+  50% { box-shadow: 0 12px 45px rgba(37, 211, 102, 0.85); }
+}
+
+.btn-whatsapp:hover {
+  transform: scale(1.06);
 }
 
 .hint {
@@ -493,15 +718,6 @@ footer .heart-beat {
   margin-bottom: 22px;
 }
 
-.modal .close-btn {
-  display: inline-block;
-  margin-top: 15px;
-  color: #a07a8a;
-  text-decoration: none;
-  font-size: 0.9rem;
-  border-bottom: 1px dashed #a07a8a;
-}
-
 /* Confetti hearts inside modal */
 .confetti {
   position: absolute;
@@ -545,6 +761,12 @@ footer .heart-beat {
     padding: 16px 20px;
   }
 
+  .btn-whatsapp {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1rem;
+  }
+
   .btn-no {
     width: 70%;
   }
@@ -552,6 +774,21 @@ footer .heart-beat {
   .letter-paper {
     transform: rotate(0deg);
   }
+
+  .bg-photo {
+    opacity: 0.32;
+    padding: 7px 7px 22px;
+  }
+
+  .bg-photo img {
+    width: 100px;
+    height: 130px;
+  }
+
+  .bg-photo.p1 { top: 5%; left: -18px; }
+  .bg-photo.p2 { top: 36%; right: -18px; }
+  .bg-photo.p3 { bottom: 3%; left: -12px; }
+
 }
 
 @media (max-width: 400px) {
@@ -560,6 +797,50 @@ footer .heart-beat {
     border-right: none;
     animation: fadeInUp 1s ease 1s both;
   }
+}
+
+/* ---------- Final touches ---------- */
+::selection {
+  background: var(--pink);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--pink-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pink-light), var(--pink-dark));
+  border-radius: 10px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--pink);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+/* Lock background scroll while the popup is open (modern browsers) */
+body:has(.overlay:target) {
+  overflow: hidden;
+}
+
+/* Tiny hearts that burst where you tap (spawned by JS) */
+.click-heart {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  font-size: 1.2rem;
+  animation: heartBurst 0.9s ease-out forwards;
+}
+
+@keyframes heartBurst {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(var(--bx), var(--by)) scale(1.2); opacity: 0; }
 }
 
 /* Reduced motion for accessibility */
